@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Análise dos Dados com R</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="James R. Hunter, PhD" />
+    <script src="libs/header-attrs-2.24/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/nhsr.css" type="text/css" />
+    <link rel="stylesheet" href="css/nhsr-fonts.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+
+class: title-slide, left, bottom
+
+# Análise dos Dados com R
+----
+## **Introdução**
+### James R. Hunter, PhD
+### 26 de setembro de 2023
+
+---
+class: inverse, middle, center
+
+# Introdução
+
+Onde tudo começa
+
+---
+
+# O Que É Nossa Objetivo
+
+--
+
+*   Aprender análise de dados **em prática**
+    -   Fazer análises de cabo ao rabo
+
+--
+
+*   Utilizar a Linguagem **R**
+
+--
+
+*   Atualizar nossa habilidade em bioestatística básica
+
+---
+
+# Professor James Hunter
+
+-   Professor Afiliado, DIPA
+
+-   DSc., Laboratório de Retrovirologia, DIPA, UNIFESP
+
+-   Pós-Doc, Projeto de Cura de HIV
+
+-   Carreira anterior em consultoria de negócios e urbanismo
+    
+-   Foco em Estatística e Métodos Quantitativos desde 1973
+
+-   Trabalho com R desde 2010
+
+---
+
+# Contato com o Professor
+
+-   email: jameshunterbr@gmail.com
+-   Twitter: [jimhunterbr](https://twitter.com/jimhunterbr)
+-   Threads: [jameshunterbr](https://threads.net/@jameshunterbr)
+-   cel: 11-9-5327-5656
+-   Office Hours:
+    -   Tues (3ª feira) 14h - 16h
+    -   EP2, Rua Pedro de Toledo 669, 6º Andar Fundos
+
+---
+
+# Filosofia da Matéria 
+
+-   Única maneira para aprender uma linguagem de computação é escrever ela
+
+--
+
+-   Mais código que você escreve, mais fácil será a próxima vez
+
+--
+
+-   Solucionar problemas práticos com R
+
+---
+
+# Don't Panic...
+
+&lt;img src="graphics/keep_calm_code.png" width="40%" style="display: block; margin: auto;" /&gt;
+
+---
+
+---
+
+# Perguntas
+
+-   Fazem muitas!
+
+-   Se você tiver uma dúvida, outros na turma terão também
+
+-   **Não existe perguntas burras**
+
+---
+
+# Carl Sagan sobre Perguntas Burras
+
+-   Astrofísico que escreveu e era apresentador do programa de TV original **Cosmos**
+
+-  Livro : **The Demon-Haunted World: Science as a Candle in the Dark (O mundo assombrado pelos demônios)**
+
+&gt; There are naive questions, tedious questions, ill-phrased questions, questions put after inadequate self-criticism. But every question is a cry to understand the world. There is no such thing as a dumb question.
+
+---
+
+# Sempre Existe uma Segundo Ponto de Vista
+
+&lt;img src="graphics/Dilbert_no_dumb_questions.png" width="90%" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+# Quanta Matemática Você Precisa Dominar?
+
+-   O que aprendeu no colegial suficiente
+
+-   Não precisa cálculo
+
+-   Somas ( `\(\Sigma\)` ), logaritmos e exponentes
+
+-   Equação de uma linha reta
+
+$$ y = b_0 + b_1x $$
+
+---
+class: center, middle, inverse
+
+# Informação e Conhecimento
+
+---
+
+class: center, middle
+
+&gt; "We are drowning in information, but we are starved for knowledge". -- John Naisbitt
+
+--
+
+Apesar esta frase seja atribuido a futurólogo John Naisbitt, esta citação tem muitos pais e mães. Usei aqui do livro de Danielle Navarro, **Learning statistics with R: A tutorial for psychology students and other beginners**, 2020, http://compcogscisydney.org/learning-statistics-with-r
+
+---
+
+# Porque Nós Precisamos Análise dos Dados?
+
+-   Podemos ver as coisas que estudamos? NÃO
+    -   Vírus, bactérias, células, nucleotídeos, proteínas
+    
+-   Maquinas que produzem os dados genômicas que estudamos são probalísticos
+    -   Palavra "*calling* bases" - sugestão de erro
+
+-   Processo natural de replicação celular ou viral - propenso a erros
+
+-   Resposta humano às doenças, remédios, tratamentos
+    -   Nível alto de incerteza e variancia
+    -   Diferenças naturais entre pessoas
+
+---
+    
+# Estatística Ajuda a Encontrar Verdades Subjacentes
+
+-   Desenvolver conjunto das regras para processar informação que recebemos
+    -   Script/Programa
+
+-   Tirar conclusões que outros podem entender, concordar ou descordar
+
+-   Como alunos, precisam poder conduzir análises básicas
+    -   Modelos e métodos mais avançados ficam com especialistas
+
+---
+
+# Habilidade Necessária para Todo Ciêntista
+-   Entender as estatísticas que você vê em papers e livros
+
+-   Separar o que é importante do que não é importante
+
+-   Separar a verdade de falsidade
+
+-   "Call Bullshit"\* quando você está sendo enganado
+
+-   Resultado: precisamos maneiras probabilísticas para achar essas verdades subjacentes
+
+.footnote[*CT Bergstrom &amp; JD West, **Calling Bullshit: the Art of Skepticism in a Data-driven World**, New York: Random House, 2020.]
+
+
+---
+
+#  Trabalho para a Matéria
+
+-   3 Lições de Casa
+    -   Trabalho individual
+
+-   Participação
+    -   Perguntas/comentários
+
+---
+class: center, middle, inverse
+
+#   R - Uma Ferramenta para Manipulação e Análise dos Dados
+
+---
+
+# CRAN: The Comprehensive R Archive Network
+
+-   Uma ONG educacional quem é o dono do código mãe de R
+
+-   Fonte oficial para cópias do software base e pacotes averiguados por eles
+
+&gt; R is a system for statistical computation and graphics. It consists of a language plus a run-time environment with graphics, a debugger, access to certain system functions, and the ability to run programs stored in script files.
+
+---
+
+# Historia de R
+
+-   Baseada na linguagem de programação estatística ("S") 
+    -   S desenvolvida por Bell Labs em 1976
+    -   Ainda existe como um produto comercial
+    
+-   R desenvolvida por Ross Ihaka e Robert Gentleman em 1995 em Nova Zelândia
+
+-   Comunidade ativa de desenvolvidores e usuários
+
+-   Mais que 19.800 pacotes adicionais disponíveis no repositório de CRAN
+    -   Muitos úteis para as análises biológicas
+    -   Bioconductor -- outro 2.000 pacotes
+    -   Muitos outros espalhados em vários repos (e.g. GitHub)
+
+---
+    
+# Virtudes de R para Análise de Dados
+
+-   Analisar via programas e scripts invés de clicar botões
+    -   Controlar a sequência e opções de operações em sua análise
+
+-   Programas sempre fazem a mesma coisa - produzem mesmo resultado
+    -   Sem surpresas porque você clicou em um butão que mudou sua análise
+    -   Só usam opções e parâmetros que você entende
+
+-   Criar um registro de como você chegou no resultado
+
+-   **De Graça** Sem custo, para sempre!
+    -   Não tem uma versão "estudantil" estupidamente cara
+    -   Nem precisa cópias piratas do software
+    
+---
+
+# A Crise de Reprodutibilidade
+
+-   Sendo capaz de reproduzir análises em tempos diferentes e em labs diferentes
+
+-   Maioria dos estudos científicos não podem ser reproduzidos
+
+-   *Nature*'s Checklist de Reprodutibilidade
+
+&gt; Workflows based on point-and-click interfaces, such as Excel, are not reproducible. Enshrine your computations and data manipulation in code.*
+
+-   R e Python trunfa Excel, Graphpad e seus amigos
+
+.footnote[*Perkel. Challenge to Scientists Nature 584, no. 7822 (2020).]
+
+---
+
+# R - Difícil de Aprender
+
+-   Se você nunca programou antes, todas as linguagens de computação parecem difíceis ao início
+
+-   R muito mais fácil que a maioria
+
+-   Passos Iniciais
+-   Criar vetores e conjuntos de dados ("*data frames*") 
+    -   Executar funções estatísticas e matemáticas
+    
+-   Vamos começar hoje escrever código
+
+-   R torna mais difícel quando você começa de escrever suas próprias funções
+    -   Quando não pode achar eles nos pacotes que tem
+
+---
+
+# O Que Vocês Devem Fazer
+
+-   Investir tempo entre as aulas
+
+-   Instalar os softwares (R e RStudio) nos seus laptops  
+
+-   Ler o material sugerido aqui
+
+-   Experimente um dos cursos de R Básico no internet 
+    -   Ter um segundo olhar sobre o mesmo material
+
+---
+
+# RStudio -- Comunicação Sofisticada com R
+
+-   Integrated Development Environment ("IDE") para R
+
+-   Disponível desde 2010
+
+-   Sede de *Tidyverse*
+
+-   Onde vocês vão fazer seu trabalho em R
+
+-   Também **De Graça**
+
+---
+# R &amp; Python
+
+-   Python - outra linguagem bastante popular
+    -   Baseada em conceitos similares aos do R
+    -   Outro linguagem de alto-nível interpretada
+
+-   Lançado em 1991
+    -   Guido van Rossum de Holanda
+    -   Nome vem do grupo comédico inglês, "Monty Python's Flying Circus"
+    -   Não a espécie de cobra
+
+-   Para estatística, mais fraco de R
+    -   Precisa funções de vários módulos para conseguir completar operações básicas de estatísticas
+    
+---
+class: center, middle, inverse
+
+# Recoursos para a Matéria
+
+---
+
+# Arquivos, Slides, etc.
+
+-   Arquivado na página do curso no Google Classrom
+
+---
+
+# Leituras Chaves
+
+-   Textos de Estatística
+    -   Diez, Barr &amp; Cetinkaya-Rundel, **OpenIntro Statistics 4**
+    -   Navarro, D. **Learning statistics with R: A tutorial for psychology students and other beginners**
+    
+-   Livros sobre R - Nível Básico
+    -   Wickham &amp; Grolemund, **R for Data Science**
+    -   Ismay &amp; Kim, **Statistical Inference via Data Science: A moderndive into R and the Tidyverse**
+    -   Irizzary, **Introduction to Data Science**
+    -   Frank E. Harrell, **R Workflow** (http://hbiostat.org/rflow/)
+    
+---
+
+# RStudio "*Cheat Sheets*"
+
+Série de resumos de 1 e 2 páginas de um número de pacotes de funções em R
+
+&lt;img src="graphics/base_r_cheat_screen.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Cursos Online
+
+-   edX - Cursos de Harvard sobre R com Prof. R. Irizzary
+    -   &lt;https://www.edx.org/learn/r-programming/harvard-university-data-science-r-basics&gt;
+
+-   Coursera - Cursos de Johns Hopkins sobre R e outros sobre R em aplicações biomedicos
+    -  &lt;https://www.coursera.org/specializations/jhu-data-science&gt; 
+
+-   Coursera - Duke University - sequence of R courses by Cetinkaya-Rundel
+    -   &lt;https://www.coursera.org/specializations/statistics?&gt;
+
+All excellent
+
+---
+# Sites sobre R
+
+-   R Bloggers (https://www.r-bloggers.com/)
+
+-   Tidyverse (https://www.tidyverse.org/learn/)
+
+-   Stack Overflow (https://stackoverflow.com/questions/tagged/r)
+
+-   Twitter (#rstats)
+
+---
+# Sistemas de Ajuda de R e RStudio
+
+-   Completo
+
+-   Toda função tem uma tela de ajuda
+
+-   Escrito por nerds para outros nerds
+    -   Explicações às vezes opacas
+    -   Especialmente mensages de erro
+
+-   Último recurso: copiar a mensagem de erro e colar ele no Google
+    -   Alguém, em algum lugar, também não entendeu a mesma coisa que é problemática para você
+
+---
+# Aplicando Google para um Erro
+
+-   O Erro
+&lt;img src="graphics/error_to_be_googled.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+-   Último recurso: copiar a mensagem de erro e colar ele no Google
+    -   Alguém, em algum lugar, também não entendeu a mesma coisa que é problemática para você
+    
+&lt;img src="graphics/googling_an_error.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+class: center, middle, inverse
+
+# Instalação dos Softwares
+
+---
+
+# Instalar R
+
+-   Fica na página seguinte:
+    -   https://cran.r-project.org/
+    
+&lt;img src="graphics/CRAN_431_initial_screen.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Na Tela Inicial (Windows)
+
+1.  Clique no link "Download R for Windows"
+
+2.  Na próxima tela, clique no "`base`"
+    -   *Mac náo faz este passo*
+
+&lt;img src="graphics/CRAN_Win_1.png" width="70%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Proceder para Instalação
+
+-   Clicar on **Download R 4.3.1 for Windows**
+
+&lt;img src="graphics/download_431_windows.png" width="70%" style="display: block; margin: auto;" /&gt;
+
+-   Programa vai aparecer no seu computador
+
+---
+# Instalação de RStudio
+
+-   Site: https://posit.co/products/open-source/rstudio/
+
+-   Role para baixo até um grande botão *azul*: "Download RStudio"
+    -   Vai informar o número de versão e tamanho do programa
+
+
+&lt;img src="graphics/RStudio_download.png" width="70%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Iniciar RStudio
+
+-   Na área de trabalho (ou através dos menus), *duplo click* no ícone de RStudio 
+    -   **Não o ícone de R**
+
+-   RStudio abrirá
+    -   R automaticamente abrirá dentro do RStudio
+
+
+---
+# Console Inicial de RStudio -- Ready to Rock!
+
+&lt;img src="graphics/RStudio_start.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+class: center, middle, inverse
+
+
+# Seu Programa Primeiro
+
+---
+
+# Carregar os Pacotes Importantes
+
+-   Os pacotes mais importantes que potencializam R
+
+-   Usaremos a maioria durante estas 4 semanas
+
+-   Script simples (`pacotes_iniciais.r`)
+
+
+```r
+packages &lt;- c("tidyverse", "broom", "car", "caret", "corrr", "data.table", 
+              "descr", "devtools", "gapminder", "ggpubr", "ggsci", 
+              "glue", "gmodels", "gt", "gtsummary", "here", "Hmisc", "hms",
+              "janitor", "jsonlite", "kableExtra","knitr", "lattice", "lubridate", 
+              "mice", "nortest", "nycflights13", 
+              "outliers", "palmerpenguins", "pROC", "psych", "quarto", 
+              "Rcpp", "readxl", "ROCR", "shiny", "styler", "summarytools", 
+              "titanic", "usethis")
+
+install.packages(packages)
+```
+
+---
+# O Que Faz Este Script - Linha 1
+
+-   Linha 1: atribuição de conjunto de pacotes ao nome `packages`
+    -   Utiliza `&lt;-` para fazer a atribuição
+
+-   Conjunto de pacotes é combinado num vetor de nomes de pacotes
+    -   Função `c()` cria um vetor de vários elementos
+    -   `c()` - *combinar* or *concatenar*
+    -   *vector* - matriz unidimensional
+
+-   Elementos de `packages` - "strings" de classe *character*
+    -   Entre aspas ("")
+
+-   Resultado da Linha 1
+
+
+&lt;img src="graphics/env_packages.png" width="70%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# VSS: Operadores de Atribuição
+
+-   Principal: `&lt;-`
+
+-   Pode usar (mas não é considerada uma boa prática) `=`
+    -   **Vai confundir com o sinal para igualdade lógica** `==`
+        -   Vai acontecer! Todos nos fazemos
+
+---
+
+#  O Que Faz Este Script - Linha 2
+
+-   Instala os pacotes no vetor
+
+-   Procura no site de CRAN (espelho) no internet
+
+-   Faz os downloads e instala os pacotes
+
+-   Vários dos pacotes têm dependências
+    -   Instalará esses pacotes também
+
+-   Dependências: outros pacotes que um pacote precisa para executar as funções do pacote primeiro
+
+---
+
+# Scripts vs. Console
+
+-   Escrever seus comandos num script de R Markdown invés do Console
+    -   Pode salvar seu trabalho
+
+-   Console é o lugar onde os comandos são executados
+    -   Mais fácil de salvar comandos em scripts que salvando a historia dos comandos do Console
+    
+---
+
+# Executar "pacotes_iniciais.r"
+
+-   Download o arquivo do repo da alua para sua pasta de R
+
+-   A aba `Files` no painel inferior direto do RStudio
+    - Clicar em `pacotes iniciais.r`
+
+-   Script abrirá no painel superior esquerdo
+
+-   Clicar no botão `Source` na barra de comandos
+
+-   Pode seguir o progresso no Console
+
+
+&lt;img src="graphics/initial_packages_in_RStudio.png" width="70%" style="display: block; margin: auto;" /&gt;
+
+---
+class: center, middle, inverse
+
+#   R - Operações Básicas
+
+---
+# R como um Calculadora
+
+.pull-left[
+
+```r
+5 + 5
+```
+
+```
+## [1] 10
+```
+
+```r
+36 * 2500000
+```
+
+```
+## [1] 9e+07
+```
+
+```r
+5876/35.44320
+```
+
+```
+## [1] 165.7864
+```
+]
+
+.pull-right[
+
+```r
+2^25   # exponent
+```
+
+```
+## [1] 33554432
+```
+
+```r
+25 * (12 + 27)
+```
+
+```
+## [1] 975
+```
+]
+
+---
+
+# Funções Matemáticas em R
+
+
+|Função      |O Que Ela Faz                      |
+|:-----------|:----------------------------------|
+|abs(x)      |valor absoluto de x                |
+|sqrt(x)     |raiz quadrado de x                 |
+|log(x)      |logaritmo natural (naperiano) de x |
+|exp(x)      |exponente natural de x             |
+|log10(x)    |logaritmo base 10 de x             |
+|round(x, n) |arredondar x para n casas decimais |
+
+---
+
+# Funções em Operação
+
+.pull-left[
+
+
+```r
+sqrt(9849)
+```
+
+```
+## [1] 99.24213
+```
+
+```r
+log(377898)
+```
+
+```
+## [1] 12.84238
+```
+
+```r
+exp(12.84238)
+```
+
+```
+## [1] 377898.2
+```
+
+]
+
+.pull-right[
+
+
+```r
+log10(377898)
+```
+
+```
+## [1] 5.577375
+```
+
+```r
+round(exp(12.84238), 0)
+```
+
+```
+## [1] 377898
+```
+]
+
+---
+# Sobre `log()` e `exp()`
+    
+-   No exemplo acima, exponente do 12.84238 é 377898.2, não 377898
+
+-   R relata 5 casas decimais na tela
+    -   Internamente, é 12.8423795969182 (13 casas decimais)
+
+-   Sabemos que `\(log(x)=e^x\)`
+
+-   Não quebramos as leis da matemática.
+
+
+
+```r
+x &lt;- 377898
+y &lt;- log(x) # calcular o log de x e atribuir a y
+y
+```
+
+```
+## [1] 12.84238
+```
+
+```r
+exp(y)
+```
+
+```
+## [1] 377898
+```
+
+---
+# Comentários
+
+-   Linha 2 do script tem um comentário à direta
+
+-   Comentários começam com um hashtag `#`
+    -   Tudo à direta do # não será interpretado (executado)
+
+-   Comentários nos lembra o que fizemos e porque
+
+-   **Hiper importantes**
+
+-   Usam eles MUITO
+
+---
+# Ordem de Cálculo (*PEMDAS*)
+
+
+
+|Operation      |Symbol |Example          |PEMDAS |
+|:--------------|:------|:----------------|:------|
+|parentheses    |()     |5 * (7 + 2) = 45 |P      |
+|exponents      |^      |5^2 = 25         |E      |
+|multiplication |*      |5 * 7 = 35       |M      |
+|division       |/      |25/5 = 5         |D      |
+|addition       |+      |5 + 7 = 12       |A      |
+|subtraction    |-      |5 – 7 = -2       |S      |
+
+-   Se você retirar os parênteses de `5 * (7 + 2)`? 
+
+-   `5 * 7 + 2` = 37
+    
+-   VSS: regras de matemática não mudam porque usamos um computador
+
+---
+# Atribuição
+
+- (nome de objeto) **&lt;-** (definição do objeto) 
+
+- definição = valores que compõem o conteúdo do objeto
+
+---
+# Atribuição - Estilos
+
+- Esses servem
+
+
+```r
+x &lt;- 6
+
+x &lt;- "Hi!"
+```
+
+- Esses funcionam mas não recomendo e não uso
+
+```
+x = 6 
+
+6 -&gt; x
+```
+
+- Esse produz um erro (não pode iniciar um comando com um número)
+
+&lt;img src="graphics/atrib_erro.png" width="90%" style="display: block; margin: auto;" /&gt;
+
+---
+# Mensagens de Erro Estranhas?
+
+-   Consulte Dr. Google 
+
+
+&lt;img src="graphics/google_erro.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Atribuição -- Nomes das Variáveis
+
+-   Regras importantes de R
+
+1.    Deve usar só letras (maiúsculas ou minúsculas), números ou símbolos `.` or `_`.
+2.    Deve iniciar o nome com uma **letra**
+
+---
+
+# Nomes das Variáveis -- Corolários
+
+-   Não devem incluir espaços
+    -   "Snake case" supera essa restriçaõ
+        -   Conectar palavras com sublinhar "_"
+
+-   Palavras reservadas de R não podem ser usados como nomes de variáveis
+    -   Exemplos: `TRUE`, `FALSE`, `if`, `else`, `for`, `function`
+
+-   Nomes de variáveis diferenciam maiúsculas de minúsculas
+    -   `Variable` e `variable` são 2 nomes diferentes
+    -   Mesmo para `x` e `X`
+    
+---
+# Casos em R
+
+&lt;img src="graphics/coding_cases.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+# Nomes das Variáveis - Ainda Mais
+
+-   Usar nomes claros e informativos
+    -   `x`, apesar de ser popular, é inútil como um nome
+    
+
+```r
+## 1a versao
+peso &lt;- 55  ## Pessoa pesa 55 kg.
+
+## 2a versao
+peso_kg &lt;- 55 ## Mais claro
+
+## 3a versao, pode converter às libras
+peso_lb &lt;- peso_kg * 2.2
+peso_lb
+```
+
+```
+## [1] 121
+```
+
+---
+# Nomes das Variáveis - Último
+
+-   Faça um diccionário dos dados
+    -   Tabela dos nomes das variáveis, qual tipo de dados, e o intervalo dos valores
+    
+-   Tente de fazer os nomes mais curtos possíveis
+
+-   "*Camel case*" - alternativa a "*snake case*"
+
+
+ 
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "googlecode",
+"highlightLines": true,
+"highlightLanguage": "r",
+"countIncrementalSlides": false,
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+<!--Hat-tip: https://www.garrickadenbuie.com/blog/xaringan-tip-logo-all-slides/-->
+<style>
+.logo {
+  background-image: url(img/epm_logo.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: absolute;
+  top: 1em;
+  right: 1em;
+  width: 110px;
+  height: 128px;
+  z-index: 0;
+}
+</style>
+
+<script>
+document
+  .querySelectorAll(
+    '.remark-slide-content' +
+    ':not(.title-slide)' +
+    // add additional classes to exclude here, e.g.
+    ':not(.inverse)' +
+    ':not(.hide-logo)'
+  )
+  .forEach(el => {
+    el.innerHTML += '<div class="logo"></div>';
+  });
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
