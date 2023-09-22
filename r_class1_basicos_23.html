@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Análise dos Dados com R</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="James R. Hunter, PhD" />
+    <script src="libs/header-attrs-2.24/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/nhsr.css" type="text/css" />
+    <link rel="stylesheet" href="css/nhsr-fonts.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+class: title-slide, left, bottom
+
+# Análise dos Dados com R
+----
+## **Arquivos e Programação em R**
+### James R. Hunter, PhD
+### 26 de setembro de 2023
+
+---
+class: inverse, middle, center
+
+# Tipos/Classes de Dados em R
+
+---
+
+# Tipos de Dados *Atômicos* 
+
+-   `&lt;int&gt;` **integer** 
+    -   Números inteiros (sem parte decimal)
+    -   Designados em R com um "L" (`26L`)
+    
+-   `&lt;dbl&gt;` **double** 
+    -   Números "Real" 
+    -   Tem uma parte decimal (mesmo se for implicita)
+    -   Designados em R como "numeric"
+
+-   `&lt;chr&gt;` **character** 
+    -   "*Strings*"
+    -   Cercados por aspas simples ou duplas (`''` or `""`)
+
+-   `&lt;lgl&gt;` **logical** 
+    -   Só podem assumir os valores `TRUE` ou `FALSE` 
+
+---
+
+# Dados Lógicos
+
+-   Podem ser interpretados como números (*integers*)
+    -   `FALSE` = 0
+    -   `TRUE` = 1
+
+-   Podem ser atribuidos como
+    -   `x &lt;- TRUE`
+
+-   Podem ser o resultado de cálculos *lógicos*
+    -   Dois números são iguais, não iguais, ...
+
+---
+    
+# Cálculos Lógicos
+
+- Operadores lógicos
+  - `==` lado esquerdo igual ao lado direto
+  - `!=` lado esquerdo **não** igual ao lado direto
+  - `&gt;=` lado esquerdo maior ou igual ao lado direto
+  - `&lt;`  lado esquerdo menor do lado direto
+  
+---
+
+# Exemplos
+
+
+```r
+x &lt;- 6 # atribuir um valor a x
+x == 6 # testar se x é igual a 6
+```
+
+```
+## [1] TRUE
+```
+
+```r
+2 &gt; 4
+```
+
+```
+## [1] FALSE
+```
+
+---
+
+# Quer Saber Qual Tipo de Variável É Ela?
+
+-   `typeof()` - tipo interno do objeto
+-   `class()` - tipo geral do objeto
+    -   Muito útil para tipos compostos (ie, não atômicos)
+
+---
+    
+# Exemplos dos Tipos atômicos
+
+
+```r
+int_var &lt;- 25L
+*typeof(int_var)
+```
+
+```
+## [1] "integer"
+```
+
+```r
+num_var &lt;- 25.879
+typeof(num_var)
+```
+
+```
+## [1] "double"
+```
+
+```r
+log_var &lt;- TRUE
+typeof(log_var)
+```
+
+```
+## [1] "logical"
+```
+
+```r
+char_var &lt;- "abcd"
+typeof(char_var)
+```
+
+```
+## [1] "character"
+```
+
+---
+
+# Hierarquia das Classes - Coerção
+
+-   R pensa que não pode misturar operações que envolvem operações com classes diferentes
+    -   Não pode multiplicar um string por um número
+    -   R retorna um erro
+
+&lt;img src="graphics/char_ver_times_2.png" width="90%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Hierarquia 
+
+-   De mais restritivo ao mais geral
+    -   **Logical**
+        -   Só tem dois valores
+        -   Também são *integers* (com valores 0 e 1) e podem estar usados para os cálculos
+    
+    -   **Integer**
+        -   Pode ser calculados como se fossem *numeric*
+        -   Armazenados numa forma mais compacta na memoria que than *numeric*
+    
+    -   **Numeric**
+        -   Qualquer número pode ser um valor *numeric*
+    
+    -   **Character**
+        -   Qualquer outra classes pode ser gravada em memoria como *character*
+        -   Não pode fazer cálculos com *character*
+        
+---
+
+# Coerção
+
+-   Aplica-se principalmente aos *vectors*
+
+-   Vetores devem ter valores de um tipo só
+
+-   R forçará os valores a serem o tipo *mais geral* dos tipos que você fornecer
+
+---
+
+# Exemplos da Coerção
+
+
+```r
+(vect1 &lt;- c(7L, 27890L))
+```
+
+```
+## [1]     7 27890
+```
+
+```r
+typeof(vect1)
+```
+
+```
+## [1] "integer"
+```
+-   2 *integers*, tipo resultado = *integer*
+
+---
+
+# Exemplo 2
+
+
+```r
+(vect2 &lt;- c(7L, 27.333))
+```
+
+```
+## [1]  7.000 27.333
+```
+
+```r
+typeof(vect2)
+```
+
+```
+## [1] "double"
+```
+
+-   *Integer* e *numeric* valores, tipo resultado = *double* 
+
+---
+
+# Exemplo 3
+
+
+```r
+(vect3 &lt;- c(27.333, "cat"))
+```
+
+```
+## [1] "27.333" "cat"
+```
+
+```r
+typeof(vect3)
+```
+
+```
+## [1] "character"
+```
+
+-   *Double* and *character* values, tipo resultado = *character*
+
+---
+
+# Exemplo 4
+
+
+```r
+(vect4 &lt;- c(TRUE, 7L, 27.333, "cat"))
+```
+
+```
+## [1] "TRUE"   "7"      "27.333" "cat"
+```
+
+```r
+typeof(vect4)
+```
+
+```
+## [1] "character"
+```
+
+-   Combinação de todos os tipos atômicos, tipo resultado = *character*
+
+---
+
+# Exemplo 5 
+
+
+```r
+(vect5 &lt;- c(7L, TRUE))
+```
+
+```
+## [1] 7 1
+```
+
+```r
+typeof(vect5)
+```
+
+```
+## [1] "integer"
+```
+
+-   *Integer* e *Logical* valores, tipo resultado = *integer*
+
+-   Somas desses valores - possível
+
+
+```r
+sum(vect5)
+```
+
+```
+## [1] 8
+```
+
+---
+
+# Coerção com Comandos
+
+-   Pode forçar a coerção de uma variável para um tipo diferente
+    -   Se for um tipo apropriado para o valor
+    
+-   Comandos `as.xxx()` 
+    -   `as.logical()`
+    -   `as.integer()`
+    -   `as.numeric()`
+    -   `as.character()`
+
+---
+
+
+# Exemplos de Coerção
+
+
+```r
+as.character(25.3)
+```
+
+```
+## [1] "25.3"
+```
+
+```r
+as.integer(25.3) # perdera a parte decimal
+```
+
+```
+## [1] 25
+```
+
+```r
+as.numeric("25.3") # vai tornar um numero
+```
+
+```
+## [1] 25.3
+```
+
+```r
+as.numeric("cat") # Nao e permitido; resultado = NA
+```
+
+```
+## Warning: NAs introduced by coercion
+```
+
+```
+## [1] NA
+```
+
+---
+
+class: center, middle, inverse
+
+# Mais Classes de Dados
+
+---
+
+# *Factors*
+
+-   Maneira compacta para gravar informações categóricas
+
+-   Transforma *strings*, números e valores lógicos em um fatorConverts strings, numbers and even logical variables into factor
+
+-   Duas partes para um *factor*
+    -   Lista interna das possibilidades alternativas (*levels*)
+    -   *Integers* que atribuem cada valor para um *level*
+    
+---
+
+# Exemplo *Factor* - 1
+ 
+-   Variável para *gênero* em um estudo
+
+-   4 níveis possíveis: 
+    -   "masculino", "feminino", "não quer declarar", "outro"
+
+-   `gênero` atualmente uma variável *character*    
+
+
+```r
+genero &lt;- c("feminino", "não quer declarar", "outro", "masculino", "feminino",
+            "masculino")
+genero
+```
+
+```
+## [1] "feminino"          "não quer declarar" "outro"            
+## [4] "masculino"         "feminino"          "masculino"
+```
+
+```r
+typeof(genero)
+```
+
+```
+## [1] "character"
+```
+
+---
+
+# Exemplo *Factor* - 2
+
+-   Converter `genero` para um *factor* com `factor()`
+
+
+```r
+generof &lt;- factor(genero)
+
+typeof(generof)
+```
+
+```
+## [1] "integer"
+```
+
+```r
+class(generof)
+```
+
+```
+## [1] "factor"
+```
+
+```r
+str(generof)
+```
+
+```
+##  Factor w/ 4 levels "feminino","masculino",..: 1 3 4 2 1 2
+```
+
+```r
+levels(generof)
+```
+
+```
+## [1] "feminino"          "masculino"         "não quer declarar"
+## [4] "outro"
+```
+
+---
+
+# Representação das Datas e Horas
+
+-   Várias classes tratam de datas e horas
+
+-   Vamos focar nas classe *Date*
+
+-   Pacotes que facilitar trabalho com datas
+
+-   Em *databases*, datas normalmente têm representação como *strings* ("04-09-2021")
+
+---
+
+## Converter *String* de Data para Classe de Data
+
+-   Função `as.Date()` 
+
+-   Se data não está no formato de data ISO ("YYYY-mm-dd")
+    -   Precisa avisar `as.Date()` qual formato que tem
+        -   "%d" = dia
+        -   "%m" = mês
+        -   "%y" ou "%Y" = ano (2 digitos or 4)
+        -   O *string* inteiro em aspas ("")
+        
+---
+
+# Exemplo Converter Data
+
+
+```r
+d &lt;- "28/05/2021"
+d_date &lt;- as.Date(d, format = "%d/%m/%Y")
+d_date
+```
+
+```
+## [1] "2021-05-28"
+```
+
+```r
+class(d_date)
+```
+
+```
+## [1] "Date"
+```
+
+---
+
+# Matemática com Datas
+
+-   Pode calcular intervalos de tempo utilizando o tipo de dado **Date**
+
+-   Operações aritméticas normais 
+
+-   VSS: função `Sys.Date()` retorna a data atual
+
+-   Aritmética de datas útil para calcular idade, tempo desde infecção
+
+
+```r
+hoje &lt;- Sys.Date() 
+hoje
+```
+
+```
+## [1] "2023-09-18"
+```
+
+```r
+hoje - d_date 
+```
+
+```
+## Time difference of 843 days
+```
+
+---
+
+class: center, middle, inverse
+
+# Trabalho com Vetores
+
+---
+
+# Indexação dos Vetores
+
+-   Acessar qualquer elemento de um vetor com um número cercado por "[]" (colchetes)
+
+-   Vetor `x` tem 10 números reais
+    -   Primero número: `x[1]`
+    -   Sexto número: `x[6]`
+    
+
+```r
+x &lt;- c(177.89, 194.47, 32.24, 99.56, 205.34, 
+       -0.95, 171.96, 112.65, 32.93, 60.53)
+
+# 1o numero
+x[1]
+```
+
+```
+## [1] 177.89
+```
+
+```r
+# 6o numero
+x[6]
+```
+
+```
+## [1] -0.95
+```
+
+---
+
+# E Tem Mais ...
+
+-   Acessar o 2º e 5º elementos de `x`
+    -   Utilize a função `c()`
+
+-   Acessar o 2º **ate** o 6º elementos
+    -   Utiliza o operador `:`
+    
+
+```r
+x[c(2,5)]
+```
+
+```
+## [1] 194.47 205.34
+```
+
+```r
+x[2:5]
+```
+
+```
+## [1] 194.47  32.24  99.56 205.34
+```
+
+---
+
+# `head()` &amp; `tail()`
+
+-   Acessar os primeiros *n* valores do vetor com `head()`
+    -   n como argumento dentro das parênteses (default = 6)
+
+-   Acessar os últimos *n* valores do vetor com `tail()`
+
+
+
+```r
+head(x)
+```
+
+```
+## [1] 177.89 194.47  32.24  99.56 205.34  -0.95
+```
+
+```r
+tail(x)
+```
+
+```
+## [1] 205.34  -0.95 171.96 112.65  32.93  60.53
+```
+
+```r
+head(x, n = 3)
+```
+
+```
+## [1] 177.89 194.47  32.24
+```
+
+---
+
+class: center, middle, inverse
+
+# Classes de Conjuntos de Dados
+
+---
+
+# Conjuntos de Dados em R
+
+-   Coleção de variáveis
+    -   Cada uma tem vários casos
+    
+-   Variável
+    -   Identificador
+    -   Classificador categórico
+    -   Valor númerico ou lógico
+    
+-   Variável é um vetorVariable is a Vector
+    -   Todos os valores devem ser do mesmo tipo
+    -   Todas as variáveis num conjunto (exceto *list*) devem ter o mesmo número de casos
+
+-   3 classes de conjuntos de dados
+    -   `List`
+    -   `Data.frame`
+    -   `Tibble`
+    
+---
+
+# List
+
+-   Tipo mais geral
+
+-   Qualquer tipo de dado
+
+-   R não aplica coerção
+
+-   Em análises de dados de cotadianas, não é muito comum
+
+-   Mas, `data.frame` e `tibble` são subtipos de `list`
+
+
+
+```r
+vect4 &lt;- list(TRUE, 7L, 27.333, "cat")
+typeof(vect4)
+```
+
+```
+## [1] "list"
+```
+
+```r
+vect4[[2]]
+```
+
+```
+## [1] 7
+```
+
+```r
+typeof(vect4[[2]])
+```
+
+```
+## [1] "integer"
+```
+
+---
+
+# Data.frame
+
+-   Tipo mais comum para conjuntos de dados
+
+-   Uma lista com estrutura adicional (bem nas entranhas de R)
+
+    -   Variáveis - Colunas
+
+    -   Casos - Fileiras
+
+-   Todas as variáveis devem ter o mesmo número dos casos
+
+-   Variáveis têm nomes
+
+-   Casos *podem* ter nomes (não obrigatório)
+
+-   Visualizar a estrutura com `str()`
+
+---
+
+
+```r
+str(mtcars)
+```
+
+```
+## 'data.frame':	32 obs. of  11 variables:
+##  $ mpg : num  21 21 22.8 21.4 18.7 18.1 14.3 24.4 22.8 19.2 ...
+##  $ cyl : num  6 6 4 6 8 6 8 4 4 6 ...
+##  $ disp: num  160 160 108 258 360 ...
+##  $ hp  : num  110 110 93 110 175 105 245 62 95 123 ...
+##  $ drat: num  3.9 3.9 3.85 3.08 3.15 2.76 3.21 3.69 3.92 3.92 ...
+##  $ wt  : num  2.62 2.88 2.32 3.21 3.44 ...
+##  $ qsec: num  16.5 17 18.6 19.4 17 ...
+##  $ vs  : num  0 0 1 1 0 1 0 1 1 1 ...
+##  $ am  : num  1 1 1 0 0 0 0 0 0 0 ...
+##  $ gear: num  4 4 4 3 3 3 3 4 4 4 ...
+##  $ carb: num  4 4 1 1 2 1 4 2 2 4 ...
+```
+
+---
+
+
+```r
+head(mtcars, n = 3)
+```
+
+```
+##                mpg cyl disp  hp drat    wt  qsec vs am gear carb
+## Mazda RX4     21.0   6  160 110 3.90 2.620 16.46  0  1    4    4
+## Mazda RX4 Wag 21.0   6  160 110 3.90 2.875 17.02  0  1    4    4
+## Datsun 710    22.8   4  108  93 3.85 2.320 18.61  1  1    4    1
+```
+
+```r
+class(mtcars)
+```
+
+```
+## [1] "data.frame"
+```
+
+```r
+typeof(mtcars)
+```
+
+```
+## [1] "list"
+```
+---
+
+# Construir um Data.frame
+
+-   Utilizar a função `data.frame()` 
+    -   Fazer uma lista das variáveis e os valores que você quer que elas assumem
+    -   Separar as variáveis com vírgulas
+    -   R atribui tipos de dados para as variáveis que criamos
+
+
+
+```r
+df &lt;- data.frame(name = c("Jim", "Fernanda", "Ana"),
+                 gender = c("male", "female", "female"),
+                 score = c(89, 91, 93),
+                 passed = c(TRUE, TRUE, TRUE))
+str(df)
+```
+
+```
+## 'data.frame':	3 obs. of  4 variables:
+##  $ name  : chr  "Jim" "Fernanda" "Ana"
+##  $ gender: chr  "male" "female" "female"
+##  $ score : num  89 91 93
+##  $ passed: logi  TRUE TRUE TRUE
+```
+
+
+---
+
+
+# Notação `$` 
+
+-   O que é o `$` na função str()?
+    -   `$ name  : chr  "Jim" "Fernanda" "Ana"`
+
+-   `$` separa o nome do `data.frame` do nome de variável
+
+-   `df$name` terá resultado dos 3 nomes
+    -   Jim, Fernanda, Ana
+
+-   Notação de colchetes ao final pode selecionar entre os nomes
+    -   `df$name[2]` -&gt; Fernanda 
+
+---
+
+# Tibble
+
+-   Forma avançada de um `data.frame`
+
+-   Parte do sistema **Tidyverse**
+
+-   Utiliza as mesmas regras que os `data.frame`
+
+-   Estrutura intero um pouco diferente
+
+-   Faster processing (most of the time)
+
+---
+
+class: center, middle, inverse
+# Fluxo de Trabalho de Análise de Dados - "*The Big Picture*"
+
+---
+
+
+&lt;img src="graphics/grolemund_process_diagram.png" width="95%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Importar Dados
+
+-   Primeiro passo em qualquer projeto em R
+
+-   Fontes dos dados:
+    -   Excel  (.csv or .xlsx) **minha escolha normal**
+    -   Arquivos de texto (.txt or .csv)
+    -   Fasta 
+    -   Arquivos dos outros processos bioinformáticos
+
+-   R não é muito eficiente para preparação dos dados
+
+---
+
+# "*Tidy Data*"
+
+-   Garantir que os dados aparecem numa forma útil para a análise
+
+-   Maioria dos conjuntos de dados são recolhidos e armazenados ao acaso
+    -   Muitos com muito pontos de dados faltando ("*missing data*")
+    -   Valores impossíveis
+        -   O homem de "135" anos
+
+-   Precisa captar esses erros
+    -   Corrigir o que for possível
+    -   Ter uma estratégia clara para lidar com o resto
+    
+---
+
+
+# "*Tidy Data*"
+
+-   Conjunto de princípios sobre a organização dos dados para a análise
+
+-   "Tidyverse"
+    -   Conjunto de pacotes "opinativos" que promovem e utilisam os princípios de formatação "*tidy*"
+
+-   A marca registrada dos "tidy data" é a consistência
+
+---
+
+&lt;img src="graphics/tidyverse_celestial.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Definição de Hadley Wickham sobre "*Tidy Data*"
+
+&gt; Like families, tidy datasets are all alike, but every messy dataset is messy in its own way.... A dataset is a collection of *values*, usually either numbers (if quantitative) or strings (if qualitative). Values are organized in two ways. Every value belongs to a *variable* and an *observation*. A variable contains all values that measure the same underlying attribute (like height, temperature, duration) across units. An observation contains all values measured on the same unit (like a person, or a day, or a race) across attributes....
+
+&gt; Tidy data is a standard way of mapping the meaning of a dataset to its structure. A dataset is messy or tidy depending on how rows, columns and tables are matched up with observations, variables and types.* 
+
+
+.footnote[*Wickham, Hadley. "Tidy Data". Journal of Statistical Software 59, 10 (2014). https://doi.org/10.18637/jss.v059.i10.]
+
+---
+
+# As Três Regras de Dados "Tidy"
+
+-   Cada variável deve ter sua própria coluna
+
+-   Cada observação (caso) deve ter sua própia fileira
+
+-   Cada valor deve ter sua própria célula*
+
+.footntote[*Wickham and Grolemund, Ch. 12.1.]
+
+
+&lt;img src="graphics/tidy_3_rules.png" width="90%" style="display: block; margin: auto;" /&gt;
+
+---
+
+&lt;img src="graphics/grolemund_process_diagram.png" width="95%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Exploração dos Dados
+
+-   Nas aulas de estatística iniciais, este é a fase que você pensou era **tudo** de análise de dados
+
+-   Construir modelos
+
+-   Avaliar modelos
+
+-   Testar hípoteses
+
+-   Construir visualizações
+    -   Exploratção (para você)
+    -   Apresentação (para o público)
+
+---
+  
+
+# Comunicar Resultados
+
+-   Escrever relatórios, fazer apresentações, etc.
+
+-   *R Markdown* ajuda inestimável em tudo isso
+    -   Todos os slides, lições de casa, etc. preparados em *R Markdown* e *Quarto*
+    
+---
+
+# Divisão de Trabalho Verdadeiro
+
+-   Importar e Limpar Dados - **60 - 70 %**
+
+-   Explorar Dados -    20 - 30 %
+
+-   Communicar Resultados - 10 - 20 %
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "googlecode",
+"highlightLines": true,
+"highlightLanguage": "r",
+"countIncrementalSlides": false,
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+<!--Hat-tip: https://www.garrickadenbuie.com/blog/xaringan-tip-logo-all-slides/-->
+<style>
+.logo {
+  background-image: url(img/epm_logo.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: absolute;
+  top: 1em;
+  right: 1em;
+  width: 110px;
+  height: 128px;
+  z-index: 0;
+}
+</style>
+
+<script>
+document
+  .querySelectorAll(
+    '.remark-slide-content' +
+    ':not(.title-slide)' +
+    // add additional classes to exclude here, e.g.
+    ':not(.inverse)' +
+    ':not(.hide-logo)'
+  )
+  .forEach(el => {
+    el.innerHTML += '<div class="logo"></div>';
+  });
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
