@@ -1,0 +1,32 @@
+---
+title: "HIV-SK Aula2"
+author: "James R. Hunter, Ph.D."
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+library(readxl)
+library(janitor)
+
+```
+
+## Import Data
+
+```{r import, warning = FALSE}
+
+data_raw <- read_excel("hiv_sk_test_aula2.xlsx", 
+                       sheet = "Informações Caso",
+                       range = "A2:N38")
+```
+
+## Clean Data
+
+```{r}
+summarytools::dfSummary(data_raw, graph.col = FALSE)
+
+skimr::skim(data_raw)
+```
